@@ -1,0 +1,58 @@
+/* CSS */
+.livre-detail {
+    display: flex;
+    /* flex-wrap: wrap; */
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: #fff;
+            box-shadow: 10px 10px 30px rgba(0, 0, 0, .05);
+            border-radius: 10px;
+  }
+  
+  .livre-image {
+    width: 400px;
+    height: 600px;
+    margin-right: 20px;
+  }
+  
+  .livre-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+  
+  .livre-info {
+    /* flex: 1; */
+    width: 800px;
+    margin: 40px;
+  }
+  
+  .livre-info h2 {
+    margin-top: 0;
+  }
+  
+  .livre-info p {
+    margin-bottom: 10px;
+  }
+  
+  .add-to-cart-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #9acd32;
+    color: #fff;
+    border-radius: 50px;
+    margin-top: 100px;
+  }
+
+  .add-to-cart-btn a{
+    color: #fff;
+  }
+  
+  .add-to-cart-btn:hover {
+    opacity: 0.8;
+  }
