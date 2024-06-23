@@ -92,7 +92,7 @@ const ResourceGrid: React.FC = () => {
                 {selectedResources.map((resource: any) => (
                     <ResourceCard
                         key={resource.id}
-                        image={`./${resource.image}`}
+                        image={`/${resource.image}`}
                         title={resource.titre}
                         author={resource.auteur}
                         category={resource.Categorie.nom}

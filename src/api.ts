@@ -54,3 +54,22 @@ export const getCategories = async (): Promise<any> => {
     throw e;
   }
 }
+
+export const getDetailLivre = async (id: number): Promise<any> => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.get(`${API_URL}/livre/detail/${id}`, 
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    return response;
+
+  } catch (error) {
+    console.error('Erreur lors de la récupération des livres:', error);
+    throw error;
+  }
+}
