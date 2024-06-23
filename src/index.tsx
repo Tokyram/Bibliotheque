@@ -3,11 +3,12 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import Pannier from './Pannier';
 import DetailLivre from './DetailLivre';
 import Login from './components/Login';
 import Payement from './Payement';
+import ProtectedRoute from './ProtectedRoute';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
@@ -15,11 +16,12 @@ root.render(
   <React.StrictMode>
      <BrowserRouter>
         <Routes>
-          <Route path="/" element={<App />} />
-          <Route path="/pannier" element={<Pannier />} />
-          <Route path="/detail/:id" element={<DetailLivre />} />
+          <Route path="/" element={<ProtectedRoute><App /></ProtectedRoute>} />
+          <Route path="/pannier" element={<ProtectedRoute><Pannier /></ProtectedRoute>} />
+          <Route path="/detail/:id" element={<ProtectedRoute><DetailLivre /></ProtectedRoute>} />
           <Route path="/login" element={<Login />} />
-          <Route path="/payement" element={<Payement />} />
+          <Route path="/payement" element={<ProtectedRoute><Payement /></ProtectedRoute>} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
   </React.StrictMode>
