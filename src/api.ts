@@ -148,3 +148,28 @@ export const confirmCommande = async (params: any): Promise<any> => {
     throw error;
   }
 }
+
+export const getCommandeValide = async (pageNumber: number, pageSize: number, recherche?: string): Promise<any> => {
+  try {
+    const token = localStorage.getItem('token');
+
+    const response = await axios.get(`${API_URL}/commande/valide`, 
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        params: {
+          pageNumber,
+          pageSize,
+          recherche
+        }
+      }
+    );
+
+    return response;
+
+  } catch (error) {
+    console.error('Erreur lors de la récupération des livres:', error);
+    throw error;
+  }
+}

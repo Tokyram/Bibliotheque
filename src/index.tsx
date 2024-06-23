@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import Pannier from './Pannier';
+import Historique from './Historique';
 import DetailLivre from './DetailLivre';
 import Login from './components/Login';
 import Payement from './Payement';
@@ -18,6 +19,7 @@ root.render(
         <Routes>
           <Route path="/" element={<ProtectedRoute><App /></ProtectedRoute>} />
           <Route path="/panier" element={<ProtectedRoute><Pannier /></ProtectedRoute>} />
+          <Route path="/historique" element={<ProtectedRoute><Historique /></ProtectedRoute>} />
           <Route path="/detail/:id" element={<ProtectedRoute><DetailLivre /></ProtectedRoute>} />
           <Route path="/login" element={<Login />} />
           <Route path="/payement" element={<ProtectedRoute><Payement /></ProtectedRoute>} />
