@@ -13,8 +13,8 @@ function App() {
        <Header />
        <HeaderBottom />
        <div className="container">
-                <SearchBar />
-                <FilterOptions />
+                {/* <SearchBar /> */}
+                {/* <FilterOptions /> */}
                 <ResourceGrid />
             </div>
 
