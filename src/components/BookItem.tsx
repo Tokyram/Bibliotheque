@@ -10,10 +10,12 @@ interface BookItemProps {
     title: string;
     category: string;
     price: string;
+    quantiteCommande: number;
 }
 
-const BookItem: React.FC<BookItemProps> = ({ imageUrl, title, category, price }) => {
+const BookItem: React.FC<BookItemProps> = ({ imageUrl, title, category, price, quantiteCommande }) => {
     const [showModal, setShowModal] = useState(false);
+    const [quantite, setQuantite] = useState(quantiteCommande);
 
     const handleValidate = () => {
         setShowModal(true);
@@ -28,6 +30,12 @@ const BookItem: React.FC<BookItemProps> = ({ imageUrl, title, category, price })
         handleCloseModal();
     };
 
+    const handleChangeQuantite = (qte: string) => {
+        const qtt = Number(qte);
+        setQuantite(qtt);
+        console.log("quantite",qtt);
+    }
+
     return (
         <div className="shopping-cart">
             <ul>
@@ -38,8 +46,8 @@ const BookItem: React.FC<BookItemProps> = ({ imageUrl, title, category, price })
                     <div className="book-info">
                         <h3>{title}</h3>
                         <div className="categories">{category.toUpperCase()}</div>
-                        <p>Price: {price}</p>
-                        <input type="number" value={1} min={1} max={10} className="quantity-input" />
+                        <p>Price: ${price}</p>
+                        <input type="number" min={1} value={quantite} max={10} className="quantity-input" onChange={(e) => handleChangeQuantite(e.target.value)} />
                     </div>
                     <div className="actions">
                         <button className="validate-btn" onClick={handleValidate}>

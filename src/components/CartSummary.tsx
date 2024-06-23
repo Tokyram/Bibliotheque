@@ -4,28 +4,28 @@ import '../styles/BookDetail.css';
 import '../styles/Header.css';
 import '../styles/Pannier.css';
 
-const CartSummary: React.FC = () => {
+const CartSummary: React.FC<any> = ({totalComande, totalPrice, averagePrice}) => {
     return (
         <div className="cart-summary">
             <div className="tot">
                 <h2>Information</h2>
                 <div className="summary-item">
                     <p>Total Books:</p>
-                    <span id="total-books">4</span>
+                    <span id="total-books">{totalComande}</span>
                 </div>
                 <div className="summary-item">
                     <p>Total Price:</p>
-                    <span id="total-price">$49.98</span>
+                    <span id="total-price">${totalPrice}</span>
                 </div>
                 <div className="summary-item">
                     <p>Average Price:</p>
-                    <span id="average-price">$24.99</span>
+                    <span id="average-price">${averagePrice}</span>
                 </div>
             </div>
             <div className="tat">
                 <div className="summary-item">
                     <p>Livraison :</p>
-                    <span id="total-books">$4.02</span>
+                    <span id="total-books">$0.00</span>
                 </div>
             </div>
             <div className="tit">

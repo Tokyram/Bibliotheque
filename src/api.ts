@@ -89,3 +89,28 @@ export const ajoutCommande = async (id: number): Promise<any> => {
     throw error;
   }
 }
+
+export const getCommandePanier = async (pageNumber: number, pageSize: number, recherche?: string): Promise<any> => {
+  try {
+    const token = localStorage.getItem('token');
+
+    const response = await axios.get(`${API_URL}/commande/panier`, 
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        params: {
+          pageNumber,
+          pageSize,
+          recherche
+        }
+      }
+    );
+
+    return response;
+    
+  } catch (error) {
+    console.error('Erreur lors de la récupération des livres:', error);
+    throw error;
+  }
+}
