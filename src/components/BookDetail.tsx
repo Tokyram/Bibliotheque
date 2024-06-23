@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import '../styles/BookDetail.css';
 import '../styles/Header.css';
 import '../styles/Pannier.css';
-import { getDetailLivre } from '../api';
+import { ajoutCommande, getDetailLivre } from '../api';
 
 const BookDetail: React.FC = () => {
   const { id } = useParams();
@@ -22,6 +22,19 @@ const BookDetail: React.FC = () => {
     }
   }
 
+  const addCommande = async (id: number) => {
+    try {
+      const response = await ajoutCommande(id);
+      if(response.status === 200) {
+        alert("Commande ajouté")
+      }
+    }
+    catch (error: any) {
+      alert(error.response.data)
+      console.error('Erreur lors de l ajout commande :', error.response.data);
+    }
+  }
+  
   useEffect(() => {
     if(id) {
       getLivre(Number(id));
@@ -43,7 +56,7 @@ const BookDetail: React.FC = () => {
           <div className="prix" style={{ textAlign: 'center'}}>${livre?.prix}</div>
           <p><b>Summary:</b></p>
           <p>{livre?.resume}</p>
-          <button className="add-to-cart-btn"><a href="pannier.html">Commander</a></button>
+          <button className="add-to-cart-btn" onClick={() => addCommande(livre.id)}>Commander</button>
         </div>
       </div>
   );

@@ -3,18 +3,19 @@ import '../styles/Header.css';
 import { Link } from 'react-router-dom';
 
 interface ResourceCardProps {
+    id: number;
     image: string;
     title: string;
     author: string;
     category: string;
     prix: number;
     detailsLink: string;
-    commande: string;
+    commande: () => void;
 }
 
-const ResourceCard: React.FC<ResourceCardProps> = ({ image, title, author, category,prix, detailsLink,commande }) => {
+const ResourceCard: React.FC<ResourceCardProps> = ({ id, image, title, author, category,prix, detailsLink, commande }) => {
     return (
-      <div className="resource-card">
+      <div className="resource-card" key={id}>
           <div className="categorie">{category}</div>
 
         <img src={image} alt="Resource" />
@@ -27,8 +28,8 @@ const ResourceCard: React.FC<ResourceCardProps> = ({ image, title, author, categ
         <button className='details'>
           <Link to={detailsLink}>Details</Link>
         </button>
-        <button>
-          <Link to={commande}>Commander</Link>
+        <button onClick={commande}>
+          Commander
         </button>
         </div>
       </div>

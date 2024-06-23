@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/Header.css';
 import ResourceCard from './ResourceCard';
-import { getCategories, getLivres } from '../api';
+import { ajoutCommande, getCategories, getLivres } from '../api';
 import SearchBar from './SearchBar';
 import FilterOptions from './FilterOption';
 
@@ -75,6 +75,22 @@ const ResourceGrid: React.FC = () => {
     // Calculer l'index de début pour la pagination
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     const selectedResources = filteredLivres.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+    
+    const addCommande = async (id: number) => {
+      try {
+        const response = await ajoutCommande(id);
+        if(response.status === 200) {
+          alert("Commande ajouté")
+        }
+      }
+      catch (error: any) {
+        alert(error.response.data)
+        console.error('Erreur lors de l ajout commande :', error.response.data);
+      }
+    }
+    const handleAddCommande = (id: number) => {
+      addCommande(id);
+    }
 
     return (
         <div>
@@ -91,14 +107,14 @@ const ResourceGrid: React.FC = () => {
             <div className="resource-grid">
                 {selectedResources.map((resource: any) => (
                     <ResourceCard
-                        key={resource.id}
+                        id={resource.id}
                         image={`/${resource.image}`}
                         title={resource.titre}
                         author={resource.auteur}
                         category={resource.Categorie.nom}
                         prix={resource.prix}
                         detailsLink={`/detail/${resource.id}`}
-                        commande={`/`}
+                        commande={() => handleAddCommande(resource.id)}
                     />
                 ))}
             </div>
