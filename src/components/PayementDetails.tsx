@@ -3,6 +3,7 @@ import '../styles/Payement.css';
 import { confirmCommande, getRegions } from '../api';
 import { jwtDecode } from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
+import '../styles/Modal.css';
 
 const PayementDetails: React.FC<any> = ({idLivre, quantite, idCommande}) => {
 
@@ -13,6 +14,9 @@ const PayementDetails: React.FC<any> = ({idLivre, quantite, idCommande}) => {
 
     const [carte, setCarte] = useState("");
     const [region, setRegion] = useState("");
+
+    const [responseFacture, setResponseFacture] = useState<any>();
+    const [showModalConf, setShowModalConf] = useState(false);
 
     const getRegion = async () => {
         try {
@@ -50,7 +54,9 @@ const PayementDetails: React.FC<any> = ({idLivre, quantite, idCommande}) => {
             const response = await confirmCommande(params);
             if(response.status === 200) {
                 alert(response.data.message);
-                navigate("/")
+                setResponseFacture(response.data);
+                setShowModalConf(true);
+                // navigate("/")
             }
         }
         catch (error: any) {
@@ -59,12 +65,18 @@ const PayementDetails: React.FC<any> = ({idLivre, quantite, idCommande}) => {
         }
     }
 
+    const handleContinue = () => {
+        setShowModalConf(false);
+        navigate("/");
+    }
+
     useEffect(() => {
         getRegion();
         decodedToken();
     },[]);
 
   return (
+    <>
     <div className='pp'>
     <div className="pay">
             <form className="form" onSubmit={handleConfirm}>
@@ -121,6 +133,22 @@ const PayementDetails: React.FC<any> = ({idLivre, quantite, idCommande}) => {
                 </form>
             </div>
         </div>
+        {
+            showModalConf && (
+                <div className="modal show">
+                    <div className="modal-content show">
+                        <h4>Notifcations</h4>
+                        <p>Votre commande est validé et payé.</p>
+                        <p>La date de livraison sera le {responseFacture?.paiement?.dateLivraison}</p>
+                        <button className="cancel-btn">Exporter la facture en PDF</button>
+                        <div className="button">
+                            <button className="confirm-btn" onClick={handleContinue}>OK</button>
+                        </div>
+                    </div>
+                </div>
+            )
+        }
+        </>
     );
 };
 
