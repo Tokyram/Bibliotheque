@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = 'http://localhost:5070/api';
+const API_URL = 'http://localhost:5070/api';  
 
 export const authenticateUser = async (username: string, password: string): Promise<any> => {
     try {
@@ -11,3 +11,26 @@ export const authenticateUser = async (username: string, password: string): Prom
       throw error;
     }
 };
+
+export const getLivres = async (pageNumber: number, pageSize: number, recherche?: string): Promise<any> => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.get(`${API_URL}/livre/livres`, 
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        params: {
+          pageNumber,
+          pageSize,
+          recherche
+        }
+      }
+    );
+
+    return response;
+
+  } catch (error) {
+    console.error('Erreur lors de la récupération des livres:', error);
+  }
+}

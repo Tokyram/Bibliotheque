@@ -1,126 +1,49 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../styles/Header.css';
 import ResourceCard from './ResourceCard';
-
-const resources = [
-    {
-        image: "https://i.pinimg.com/236x/37/a9/98/37a99839a447357ee6d3d4b9c991d864.jpg",
-        title: "TITRE DU LIVRE",
-        author: "by Author's Name",
-        category: "CATEGORIE",
-        prix: 19.00,
-        id: 1
-    },
-    {
-      image: "https://i.pinimg.com/236x/37/a9/98/37a99839a447357ee6d3d4b9c991d864.jpg",
-      title: "TITRE DU LIVRE",
-      author: "by Author's Name",
-      category: "CATEGORIE",
-      prix: 19.00,
-      id: 1
-  },
-  {
-    image: "https://i.pinimg.com/236x/37/a9/98/37a99839a447357ee6d3d4b9c991d864.jpg",
-    title: "TITRE DU LIVRE",
-    author: "by Author's Name",
-    category: "CATEGORIE",
-    prix: 19.00,
-    id: 1
-},
-{
-  image: "https://i.pinimg.com/236x/37/a9/98/37a99839a447357ee6d3d4b9c991d864.jpg",
-  title: "TITRE DU LIVRE",
-  author: "by Author's Name",
-  category: "CATEGORIE",
-  prix: 19.00,
-  id: 1
-},
-{
-  image: "https://i.pinimg.com/236x/37/a9/98/37a99839a447357ee6d3d4b9c991d864.jpg",
-  title: "TITRE DU LIVRE",
-  author: "by Author's Name",
-  category: "CATEGORIE",
-  prix: 19.00,
-  id: 1
-},
-{
-  image: "https://i.pinimg.com/236x/37/a9/98/37a99839a447357ee6d3d4b9c991d864.jpg",
-  title: "TITRE DU LIVRE",
-  author: "by Author's Name",
-  category: "CATEGORIE",
-  prix: 19.00,
-  id: 1
-},
-{
-  image: "https://i.pinimg.com/236x/37/a9/98/37a99839a447357ee6d3d4b9c991d864.jpg",
-  title: "TITRE DU LIVRE",
-  author: "by Author's Name",
-  category: "CATEGORIE",
-  prix: 19.00,
-  id: 1
-},
-{
-  image: "https://i.pinimg.com/236x/37/a9/98/37a99839a447357ee6d3d4b9c991d864.jpg",
-  title: "TITRE DU LIVRE",
-  author: "by Author's Name",
-  category: "CATEGORIE",
-  prix: 19.00,
-  id: 1
-},
-{
-  image: "https://i.pinimg.com/236x/37/a9/98/37a99839a447357ee6d3d4b9c991d864.jpg",
-  title: "TITRE DU LIVRE",
-  author: "by Author's Name",
-  category: "CATEGORIE",
-  prix: 19.00,
-  id: 1
-},
-{
-  image: "https://i.pinimg.com/236x/37/a9/98/37a99839a447357ee6d3d4b9c991d864.jpg",
-  title: "TITRE DU LIVRE",
-  author: "by Author's Name",
-  category: "CATEGORIE",
-  prix: 19.00,
-  id: 1
-},
-{
-  image: "https://i.pinimg.com/236x/37/a9/98/37a99839a447357ee6d3d4b9c991d864.jpg",
-  title: "TITRE DU LIVRE",
-  author: "by Author's Name",
-  category: "CATEGORIE",
-  prix: 19.00,
-  id: 1
-},
-
-    // Ajoutez plus de livres ici
-];
+import { getLivres } from '../api';
 
 const ITEMS_PER_PAGE = 6; // Nombre de livres par page
 
 const ResourceGrid: React.FC = () => {
     const [currentPage, setCurrentPage] = useState(1);
+    const [livres, setLivres] = useState<any>([]);
+    const [totalPages, setTotalPages] = useState(1);
+
+    const getBooks = async (pageNumber: number, pageSize: number, recherche?: string) => {
+      try {
+        const response = await getLivres(pageNumber, pageSize, recherche);
+        if(response.status === 200) {
+          setLivres(response.data.Livres);
+          setTotalPages(response.data.PageCount);
+        }
+      } catch (error) {
+        console.error('Erreur lors de la récupération des livres:', error);
+      }
+    }
+
+    useEffect(() => {
+      getBooks(currentPage, ITEMS_PER_PAGE);
+    }, [currentPage]);
 
     const handleNextPage = () => {
-        setCurrentPage((prevPage) => Math.min(prevPage + 1, Math.ceil(resources.length / ITEMS_PER_PAGE)));
+      setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
     };
 
     const handlePreviousPage = () => {
         setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
     };
 
-    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-    const selectedResources = resources.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-
     return (
         <div>
             <div className="resource-grid">
-                {selectedResources.map((resource) => (
+                {livres.map((resource: any) => (
                     <ResourceCard
                         key={resource.id}
-                        image={resource.image}
-                        title={resource.title}
-                        author={resource.author}
-                        category={resource.category}
+                        image={`./${resource.image}`}
+                        title={resource.titre}
+                        author={resource.auteur}
+                        category={resource.Categorie.nom}
                         prix={resource.prix}
                         detailsLink={`/detail/${resource.id}`}
                         commande={`/`}
@@ -131,8 +54,8 @@ const ResourceGrid: React.FC = () => {
                 <button className="pagination-btn" onClick={handlePreviousPage} disabled={currentPage === 1}>
                     Previous
                 </button>
-                <span className="pagination-info">Page {currentPage} of {Math.ceil(resources.length / ITEMS_PER_PAGE)}</span>
-                <button className="pagination-btn" onClick={handleNextPage} disabled={currentPage === Math.ceil(resources.length / ITEMS_PER_PAGE)}>
+                <span className="pagination-info">Page {currentPage} of {totalPages}</span>
+                <button className="pagination-btn" onClick={handleNextPage} disabled={currentPage === totalPages}>
                     Next
                 </button>
             </div>
