@@ -2,15 +2,20 @@ import React from 'react';
 import '../styles/Header.css';
 
 
-const FilterOptions: React.FC = () => {
+const FilterOptions: React.FC<any> = ({categories, selectedCategory, handleCategoryClick})=> {
     return (
         <div className="filter-options">
-            <button>Site Visit</button>
-            <button>Webinars</button>
-            <button>White Papers</button>
-            <button>Corporate Mentoring</button>
-            <button>Technology Transfer</button>
-            <button>Sponsored Research</button>
+            {
+                categories.map((c: any) => (
+                    <button
+                      key={c.id}
+                      className={selectedCategory === c.nom ? 'selected' : ''}
+                      onClick={() => handleCategoryClick(c.nom)}
+                    >
+                      {c.nom}
+                    </button>
+                ))
+            }
         </div>
     );
 }

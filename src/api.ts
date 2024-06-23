@@ -32,5 +32,25 @@ export const getLivres = async (pageNumber: number, pageSize: number, recherche?
 
   } catch (error) {
     console.error('Erreur lors de la récupération des livres:', error);
+    throw error;
+  }
+}
+
+export const getCategories = async (): Promise<any> => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.get(`${API_URL}/categorie/categories`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    return response;
+
+  } catch (e) {
+    console.error('Erreur lors de la récupération des livres:', e);
+    throw e;
   }
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/Header.css';
 import ResourceCard from './ResourceCard';
-import { getLivres } from '../api';
+import { getCategories, getLivres } from '../api';
 import SearchBar from './SearchBar';
 import FilterOptions from './FilterOption';
 
@@ -12,6 +12,9 @@ const ResourceGrid: React.FC = () => {
     const [livres, setLivres] = useState<any>([]);
     const [totalPages, setTotalPages] = useState(1);
     const [search, setSearch] = useState("");
+
+    const [categ, setCateg] = useState<any>([]);
+    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
     const getBooks = async (pageNumber: number, pageSize: number, recherche?: string) => {
       try {
@@ -25,6 +28,27 @@ const ResourceGrid: React.FC = () => {
       }
     }
 
+    const getCategorie = async () => {
+      try {
+        const response = await getCategories();
+        if(response.status === 200) {
+          setCateg(response.data);
+        }
+      } catch (error) {
+        console.error('Erreur lors de la récupération des livres:', error);
+      }
+    }
+
+    const handleCategoryClick = (category: string) => {
+      if (category === selectedCategory) {
+        setSelectedCategory(null);
+      } else {
+        setSelectedCategory(category);
+        setCurrentPage(1);
+      }
+      console.log("select categ", selectedCategory);
+    };
+
     const rechercheLivre = () => {
       console.log("recherche", search);
       if(search === "" || search === undefined) getBooks(currentPage, ITEMS_PER_PAGE);
@@ -33,6 +57,7 @@ const ResourceGrid: React.FC = () => {
 
     useEffect(() => {
       getBooks(currentPage, ITEMS_PER_PAGE);
+      getCategorie();
     }, [currentPage]);
 
     const handleNextPage = () => {
@@ -43,6 +68,14 @@ const ResourceGrid: React.FC = () => {
         setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
     };
 
+    const filteredLivres = selectedCategory
+      ? livres.filter((livre: any) => livre.Categorie.nom === selectedCategory)
+      : livres;
+
+    // Calculer l'index de début pour la pagination
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const selectedResources = filteredLivres.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
     return (
         <div>
           <SearchBar
@@ -50,9 +83,13 @@ const ResourceGrid: React.FC = () => {
             search = {search}
             setSearch = {setSearch}
           />
-          <FilterOptions />
+          <FilterOptions
+            categories={categ}
+            selectedCategory={selectedCategory}
+            handleCategoryClick={handleCategoryClick}
+          />
             <div className="resource-grid">
-                {livres.map((resource: any) => (
+                {selectedResources.map((resource: any) => (
                     <ResourceCard
                         key={resource.id}
                         image={`./${resource.image}`}

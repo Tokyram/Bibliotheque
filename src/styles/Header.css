@@ -130,6 +130,12 @@ button:hover {
     margin: 10px;
 }
 
+.filter-options button.selected {
+    background-color: #9acd32;
+    color: #fff;
+    border: none;
+}
+
 .filter-options button:hover {
     background-color: #9acd32;
     transition: 1s ease;
