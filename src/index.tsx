@@ -17,7 +17,7 @@ root.render(
      <BrowserRouter>
         <Routes>
           <Route path="/" element={<ProtectedRoute><App /></ProtectedRoute>} />
-          <Route path="/pannier" element={<ProtectedRoute><Pannier /></ProtectedRoute>} />
+          <Route path="/panier" element={<ProtectedRoute><Pannier /></ProtectedRoute>} />
           <Route path="/detail/:id" element={<ProtectedRoute><DetailLivre /></ProtectedRoute>} />
           <Route path="/login" element={<Login />} />
           <Route path="/payement" element={<ProtectedRoute><Payement /></ProtectedRoute>} />
