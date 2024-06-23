@@ -108,9 +108,43 @@ export const getCommandePanier = async (pageNumber: number, pageSize: number, re
     );
 
     return response;
-    
+
   } catch (error) {
     console.error('Erreur lors de la récupération des livres:', error);
+    throw error;
+  }
+}
+
+export const getRegions = async (): Promise<any> => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.get(`${API_URL}/region`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    return response;
+
+  } catch (e) {
+    console.error('Erreur lors de la récupération des régions:', e);
+    throw e;
+  }
+}
+
+export const confirmCommande = async (params: any): Promise<any> => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.post(`${API_URL}/paiement`,params, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return response;
+  } catch (error) {
+    console.error("Login failed. Please try again.", error);
     throw error;
   }
 }

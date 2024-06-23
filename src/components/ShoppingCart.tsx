@@ -86,6 +86,8 @@ const ShoppingCart: React.FC = () => {
                                     category={c?.Livre?.Categorie?.nom}
                                     price={c?.Livre?.prix}
                                     quantiteCommande={c?.quantite}
+                                    idCommande={c?.id}
+                                    idLivre={c?.Livre?.id}
                                 />
                             ))
                         }

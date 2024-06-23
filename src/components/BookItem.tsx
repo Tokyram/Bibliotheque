@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import ValidationModal from './ValidationModal';
 import '../styles/BookDetail.css';
 import '../styles/Header.css';
@@ -11,15 +11,17 @@ interface BookItemProps {
     category: string;
     price: string;
     quantiteCommande: number;
+    idLivre: number;
+    idCommande: number;
 }
 
-const BookItem: React.FC<BookItemProps> = ({ imageUrl, title, category, price, quantiteCommande }) => {
+const BookItem: React.FC<BookItemProps> = ({ imageUrl, title, category, price, quantiteCommande, idLivre, idCommande }) => {
     const [showModal, setShowModal] = useState(false);
     const [quantite, setQuantite] = useState(quantiteCommande);
 
-    const handleValidate = () => {
+    const handleValidate = useCallback(() => {
         setShowModal(true);
-    };
+    }, []);
 
     const handleCloseModal = () => {
         setShowModal(false);
@@ -47,7 +49,7 @@ const BookItem: React.FC<BookItemProps> = ({ imageUrl, title, category, price, q
                         <h3>{title}</h3>
                         <div className="categories">{category.toUpperCase()}</div>
                         <p>Price: ${price}</p>
-                        <input type="number" min={1} value={quantite} max={10} className="quantity-input" onChange={(e) => handleChangeQuantite(e.target.value)} />
+                        <input type="number" min={1} value={quantite} className="quantity-input" onChange={(e) => handleChangeQuantite(e.target.value)} />
                     </div>
                     <div className="actions">
                         <button className="validate-btn" onClick={handleValidate}>
@@ -72,9 +74,11 @@ const BookItem: React.FC<BookItemProps> = ({ imageUrl, title, category, price, q
                 <ValidationModal
                     bookTitle={title}
                     bookPrice={price}
-                    bookQuantity={'1'} // Placeholder for quantity; replace with actual logic if needed
+                    bookQuantity={quantite.toString()}
                     onClose={handleCloseModal}
                     onConfirm={handleConfirmBook}
+                    bookId={idLivre}
+                    commandeId={idCommande}
                 />
             )}
         </div>

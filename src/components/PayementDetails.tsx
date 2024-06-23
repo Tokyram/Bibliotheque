@@ -1,27 +1,96 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import '../styles/Payement.css';
+import { confirmCommande, getRegions } from '../api';
+import { jwtDecode } from 'jwt-decode';
+import { useNavigate } from 'react-router-dom';
 
-const PayementDetails: React.FC = () => {
+const PayementDetails: React.FC<any> = ({idLivre, quantite, idCommande}) => {
+
+    const navigate = useNavigate();
+
+    const [regions, setRegions] = useState<any>([]);
+    const [user, setUser] = useState<any>();
+
+    const [carte, setCarte] = useState("");
+    const [region, setRegion] = useState("");
+
+    const getRegion = async () => {
+        try {
+            const response = await getRegions();
+            if(response.status === 200) {
+                setRegions(response.data)
+            }
+        } catch (error) {
+            console.error('Erreur lors de la récupération des régions:', error);
+        }
+    }
+
+    const decodedToken = () => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            const decodedToken = jwtDecode(token) as any;
+            console.log("user", decodedToken);
+            setUser(decodedToken);
+        }
+    }
+
+    const handleConfirm = async (event: React.FormEvent) => {
+
+        try {
+            event.preventDefault();
+            const params = {
+                idCommande: idCommande,
+                idLivre: idLivre,
+                quantite: Number(quantite),
+                carte: carte,
+                idRegion: Number(region)
+            }
+    
+            console.log(params);
+            const response = await confirmCommande(params);
+            if(response.status === 200) {
+                alert(response.data.message);
+                navigate("/")
+            }
+        }
+        catch (error: any) {
+            alert(error.response.data)
+            console.error('Erreur lors de l ajout commande :', error.response.data);
+        }
+    }
+
+    useEffect(() => {
+        getRegion();
+        decodedToken();
+    },[]);
+
   return (
     <div className='pp'>
     <div className="pay">
-          <form className="form">
+            <form className="form" onSubmit={handleConfirm}>
               <div className="separator">
                   <h2>Votre Payement now</h2>
                   <div className="credit-card-info--form">
                       <div className="input_container">
                           <label htmlFor="cardholder_name" className="input_label">Region</label>
-                          <select name="input-name" className='input_field' id="cardholder_name">
-                              <option className='input_field' value="">tana</option>
-                              <option className='input_field' value="">tana</option>
-                              <option className='input_field' value="">tana</option>
-                          </select>
+                            <select
+                                name="input-name"
+                                className='input_field'
+                                id="cardholder_name"
+                                value={region}
+                                onChange={(e) => setRegion(e.target.value)}
+                            >
+                                <option value="" disabled>Choose a region</option>
+                                {regions.map((r: any) => (
+                                    <option key={r.id} className='input_field' value={r.id}>{r.nom}</option>
+                                ))}
+                            </select>
                           {/* <input id="cardholder_name" className="input_field" type="text" name="input-name" title="Input title" placeholder="Enter your full name" /> */}
                       </div>
 
                       <div className="input_container">
                           <label htmlFor="card_number" className="input_label">Card Number</label>
-                          <input id="card_number" className="input_field" type="text" name="input-name" title="Input title" placeholder="0000 0000 0000 0000" />
+                          <input id="card_number" className="input_field" type="text" name="input-name" value={carte} onChange={(e) => setCarte(e.target.value)} title="Input title" placeholder="0000 0000 0000 0000" />
                       </div>
 
 
@@ -31,27 +100,28 @@ const PayementDetails: React.FC = () => {
               <button className="purchase--btn">Checkout</button>
 
           </form>
-      </div>
-      <div className="pay2">
+        </div>
+        <div className="pay2">
               <form className="form">
                   <div className="separator">
-                      <h2>Vos informations sup</h2>
+                      <h2>Vos informations supplémentaires</h2>
                       <div className="credit-card-info--form">
-                          
-
-                        <p><b>Nom:</b> John Doe</p>
-                        <p><b>Prenom:</b> Jean </p>
-                        <p><b>Numero:</b>  03402022</p>
-                        <p><b>Adresse:</b> Lot Ab 25125 Andraharo </p>
-                        
+                        {user ? (
+                        <>
+                            <p><b>Nom:</b> {user?.['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'] || 'Non spécifié'}</p>
+                            <p><b>Prenom:</b> {user?.['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname'] || 'Non spécifié'}</p>
+                            <p><b>Numero:</b> {user?.['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] || 'Non spécifié'}</p>
+                            <p><b>Adresse:</b> {user?.['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/locality'] || 'Non spécifiée'}</p>
+                        </>
+                        ) : (
+                        <p>Chargement des informations utilisateur...</p>
+                        )}
                       </div>
                   </div>
-
-
-              </form>
-          </div>
-          </div>
-  );
+                </form>
+            </div>
+        </div>
+    );
 };
 
 export default PayementDetails;
