@@ -37,7 +37,7 @@ const BookItem: React.FC<BookItemProps> = ({ imageUrl, title, category, price })
                     </div>
                     <div className="book-info">
                         <h3>{title}</h3>
-                        <div className="categorie">{category}</div>
+                        <div className="categories">{category.toUpperCase()}</div>
                         <p>Price: {price}</p>
                         <input type="number" value={1} min={1} max={10} className="quantity-input" />
                     </div>

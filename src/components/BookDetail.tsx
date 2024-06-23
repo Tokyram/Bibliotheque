@@ -18,7 +18,7 @@ const BookDetail: React.FC = () => {
           <h2>The Art of Storytelling {id}</h2>
           <p><b>Author:</b> John Doe</p>
           <p><b>Number of Pages:</b> 320</p>
-          <div className="categorie">CATEGORIE</div>
+          <div className="categories">CATEGORIE</div>
           <p><b>EditionDate:</b> January 2022</p>
           <p><b>Summary:</b></p>
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet nulla auctor, vestibulum magna sed, convallis ex. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec sed odio dui. Donec sed odio dui.</p>

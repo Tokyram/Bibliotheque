@@ -209,6 +209,20 @@ button:hover {
     margin-right: 410px;
 }
 
+.categories {
+    background-color: #4c6618;
+    color: #ffffff;
+    padding: 5px 10px;
+    border-radius: 50px;
+    /* margin: 5px; */
+    width: 60px;
+    font-weight: inherit;
+    font-size: 12px;
+    /* z-index: 1; */
+    /* position: absolute; */
+    /* margin-right: 410px; */
+}
+
 .prix {
     background-color: #000000;
     color: #fff;
