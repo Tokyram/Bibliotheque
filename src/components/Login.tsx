@@ -1,20 +1,36 @@
 import React, { useState } from 'react';
 import '../styles/Login.css';
+import { authenticateUser } from '../api';
+import { useNavigate } from 'react-router-dom';
 
 const Login: React.FC = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
-    const handleLogin = (event: React.FormEvent) => {
+    const navigate = useNavigate();
+
+    const handleLogin = async (event: React.FormEvent) => {
         event.preventDefault();
         // Exemple de validation simple
         if (username === '' || password === '') {
             setError('Please fill in both fields.');
         } else {
             setError('');
-            // Ajoutez ici votre logique de connexion
             console.log('Logging in with', { username, password });
+            try {
+                const response = await authenticateUser(username, password);
+                if(response.status === 200) {
+                    localStorage.setItem('token', response.data.token);
+                    navigate('/');
+                } else {
+                    setError('Bad credentials.');
+                }
+                
+            } catch (error) {
+                setError('An error occurred. Please try again later.');
+            }
+            
         }
     };
 
