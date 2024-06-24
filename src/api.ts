@@ -173,3 +173,16 @@ export const getCommandeValide = async (pageNumber: number, pageSize: number, re
     throw error;
   }
 }
+
+export const annulerCommande = async (id: number): Promise<any> => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await axios.delete(`${API_URL}/commande/annule/${id}`, {headers: {
+      Authorization: `Bearer ${token}`
+    }});
+    return response;
+  } catch (error) {
+    console.error("Add commande failed. Please try again.", error);
+    throw error;
+  }
+}
