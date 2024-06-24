@@ -61,7 +61,8 @@ const Commande: React.FC = () => {
                                     imageUrl={`/${c?.Livre?.image}`}
                                     title={c?.Livre?.titre}
                                     category={c?.Livre?.Categorie?.nom}
-                                    price={c?.Livre?.prix}
+                                    price={c?.total}
+                                    priceUnit={c?.Livre?.prix}
                                     quantiteCommande={c?.quantite}
                                     idCommande={c?.id}
                                     idLivre={c?.Livre?.id}

@@ -9,8 +9,8 @@ const FilterOptions: React.FC<any> = ({categories, selectedCategory, handleCateg
                 categories.map((c: any) => (
                     <button
                       key={c.id}
-                      className={selectedCategory === c.nom ? 'selected' : ''}
-                      onClick={() => handleCategoryClick(c.nom)}
+                      className={selectedCategory === c.id ? 'selected' : ''}
+                      onClick={() => handleCategoryClick(c.id)}
                     >
                       {c.nom}
                     </button>

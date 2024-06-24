@@ -14,11 +14,11 @@ const ResourceGrid: React.FC = () => {
     const [search, setSearch] = useState("");
 
     const [categ, setCateg] = useState<any>([]);
-    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+    const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
 
-    const getBooks = async (pageNumber: number, pageSize: number, recherche?: string) => {
+    const getBooks = async (pageNumber: number, pageSize: number, recherche?: string, categ?: number) => {
       try {
-        const response = await getLivres(pageNumber, pageSize, recherche);
+        const response = await getLivres(pageNumber, pageSize, recherche, categ);
         if(response.status === 200) {
           setLivres(response.data.Livres);
           setTotalPages(response.data.PageCount);
@@ -39,12 +39,13 @@ const ResourceGrid: React.FC = () => {
       }
     }
 
-    const handleCategoryClick = (category: string) => {
+    const handleCategoryClick = (category: number) => {
       if (category === selectedCategory) {
         setSelectedCategory(null);
       } else {
         setSelectedCategory(category);
-        setCurrentPage(1);
+        getBooks(currentPage, ITEMS_PER_PAGE, search, category);
+        // setCurrentPage(1);
       }
       console.log("select categ", selectedCategory);
     };
@@ -67,14 +68,6 @@ const ResourceGrid: React.FC = () => {
     const handlePreviousPage = () => {
         setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
     };
-
-    const filteredLivres = selectedCategory
-      ? livres.filter((livre: any) => livre.Categorie.nom === selectedCategory)
-      : livres;
-
-    // Calculer l'index de début pour la pagination
-    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-    const selectedResources = filteredLivres.slice(startIndex, startIndex + ITEMS_PER_PAGE);
     
     const addCommande = async (id: number) => {
       try {
@@ -105,7 +98,7 @@ const ResourceGrid: React.FC = () => {
             handleCategoryClick={handleCategoryClick}
           />
             <div className="resource-grid">
-                {selectedResources.map((resource: any) => (
+                {livres.map((resource: any) => (
                     <ResourceCard
                         id={resource.id}
                         image={`/${resource.image}`}
@@ -115,6 +108,7 @@ const ResourceGrid: React.FC = () => {
                         prix={resource.prix}
                         detailsLink={`/detail/${resource.id}`}
                         commande={() => handleAddCommande(resource.id)}
+                        stock={resource.Stock.quantite}
                     />
                 ))}
             </div>

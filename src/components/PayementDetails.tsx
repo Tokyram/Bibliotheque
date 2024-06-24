@@ -100,7 +100,7 @@ const PayementDetails: React.FC<any> = ({idLivre, quantite, idCommande}) => {
     <div className="pay">
             <form className="form" onSubmit={handleConfirm}>
               <div className="separator">
-                  <h2>Votre Payement now</h2>
+                  <h2>Information de paiement</h2>
                   <div className="credit-card-info--form">
                       <div className="input_container">
                           <label htmlFor="cardholder_name" className="input_label">Region</label>

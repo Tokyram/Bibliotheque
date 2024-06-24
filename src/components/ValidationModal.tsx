@@ -26,7 +26,7 @@ const ValidationModal: React.FC<ValidationModalProps> = ({ bookTitle, bookPrice,
                 <div className="button">
                     <button className="confirm-btn" onClick={onConfirm}>
                     <Link 
-                        to="/payement"
+                        to="/paiement"
                         state={{ idLivre: bookId, quantite: bookQuantity, idCommande: commandeId }}
                     >
                         Confirmer

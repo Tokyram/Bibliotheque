@@ -12,7 +12,7 @@ export const authenticateUser = async (username: string, password: string): Prom
     }
 };
 
-export const getLivres = async (pageNumber: number, pageSize: number, recherche?: string): Promise<any> => {
+export const getLivres = async (pageNumber: number, pageSize: number, recherche?: string, categ?: number): Promise<any> => {
   try {
     const token = localStorage.getItem('token');
     const response = await axios.get(`${API_URL}/livre/livres`, 
@@ -23,7 +23,8 @@ export const getLivres = async (pageNumber: number, pageSize: number, recherche?
         params: {
           pageNumber,
           pageSize,
-          recherche
+          recherche,
+          categ
         }
       }
     );

@@ -22,7 +22,7 @@ root.render(
           <Route path="/historique" element={<ProtectedRoute><Historique /></ProtectedRoute>} />
           <Route path="/detail/:id" element={<ProtectedRoute><DetailLivre /></ProtectedRoute>} />
           <Route path="/login" element={<Login />} />
-          <Route path="/payement" element={<ProtectedRoute><Payement /></ProtectedRoute>} />
+          <Route path="/paiement" element={<ProtectedRoute><Payement /></ProtectedRoute>} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>

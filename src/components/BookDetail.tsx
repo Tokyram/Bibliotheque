@@ -54,6 +54,7 @@ const BookDetail: React.FC = () => {
           <div className="categories">{livre?.Categorie?.nom?.toUpperCase()}</div>
           <p><b>EditionDate:</b> {livre?.dateEdition?.split("T")[0]}</p>
           <div className="prix" style={{ textAlign: 'center'}}>${livre?.prix}</div>
+          <p><b>Available:</b> {livre?.Stock.quantite} copies</p>
           <p><b>Summary:</b></p>
           <p>{livre?.resume}</p>
           <button className="add-to-cart-btn" onClick={() => addCommande(livre.id)}>Commander</button>

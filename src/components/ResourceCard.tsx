@@ -11,9 +11,10 @@ interface ResourceCardProps {
     prix: number;
     detailsLink: string;
     commande: () => void;
+    stock: number;
 }
 
-const ResourceCard: React.FC<ResourceCardProps> = ({ id, image, title, author, category,prix, detailsLink, commande }) => {
+const ResourceCard: React.FC<ResourceCardProps> = ({ id, image, title, author, category,prix, detailsLink, commande, stock }) => {
     return (
       <div className="resource-card" key={id}>
           <div className="categorie">{category}</div>
@@ -22,11 +23,12 @@ const ResourceCard: React.FC<ResourceCardProps> = ({ id, image, title, author, c
         <h3>{title}</h3>
         <div className="inf">
           <div className="prix">${prix}</div>
+          <div className="prix">{stock} dispo</div>
         </div>
 
         <div className="act">
         <button className='details'>
-          <Link to={detailsLink}>Details</Link>
+          <Link to={detailsLink}>Detail</Link>
         </button>
         <button onClick={commande}>
           Commander
